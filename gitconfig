@@ -1,0 +1,16 @@
+[user]
+	name = 
+	email = 
+[alias]
+	co = checkout
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	excludesfile = ~/.gitignore
+	editor = vim
+[apply]
+	whitespace = nowarn
+[format]
+	pretty = %C(yellow)%h %C(green)%an%Creset %s %C(red)(%cr)%Creset
