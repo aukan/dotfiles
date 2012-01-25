@@ -1,0 +1,27 @@
+# Hidden files
+*~
+
+# RVM
+.rvmrc
+
+# ctags
+tags
+
+# VIM Files
+*.swo
+*.swp
+*.vimsession
+
+# Bundler
+Gemfile.lock
+
+# Rails
+db/schema.rb
+db/*.sqlite3
+log/*.log
+
+# My own files
+aukan/*
+
+# Passenger
+tmp/restart.txt
