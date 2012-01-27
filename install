@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Inscript that installs the dot files
+#
+# It creates symlinks to the files contained in
+# the source directory.
+
