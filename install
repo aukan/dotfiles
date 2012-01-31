@@ -1,7 +1,30 @@
 #!/bin/bash
 
-# Inscript that installs the dot files
+# Script that installs the dotfiles
 #
 # It creates symlinks to the files contained in
-# the source directory.
+# the source directory and backups the previous files
 
+# Utilities
+function transform_path {
+  sed "s/dotfiles\//$ESCAPED_HOME\/./"
+}
+function escape_slashes {
+  sed 's/\//\\\//g'
+}
+
+# Initialize
+BASE_DIR=$(dirname $0)
+ESCAPED_HOME=$(echo $HOME | escape_slashes)
+BACKUP_DIR=backups/$(date +%s)
+ESCAPED_BACKUP_DIR=$(echo $BACKUP_DIR | escape_slashes)
+cd $BASE_DIR
+
+# Create backup directory
+mkdir -p $BACKUP_DIR
+
+# Backup existent dotfiles
+find dotfiles/* -type f | sed "s/dotfiles\//{$ESCAPED_HOME\/.,$ESCAPED_BACKUP_DIR\/}/" | xargs cp
+
+# Make sure all directories exist
+# find dotfiles/* -type d | transform_path | xargs mkdir -p
