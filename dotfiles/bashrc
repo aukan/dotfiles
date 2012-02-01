@@ -19,7 +19,3 @@ fi
 
 # Load RVM
 [[ -s "/usr/local/rvm/scripts/rvm" ]] && . "/usr/local/rvm/scripts/rvm"
-
-# reload RVM
-cd ..
-cd -
