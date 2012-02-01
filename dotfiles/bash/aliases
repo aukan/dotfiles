@@ -3,7 +3,7 @@ alias install='sudo apt-get install'
 alias remove='sudo apt-get remove'
 
 # edit bash configuration
-alias bashrc='vim ~/.dotfiles/bashrc'
+alias bashrc='vim ~/.bashrc'
 
 # cd
 alias ..='cd ..'
