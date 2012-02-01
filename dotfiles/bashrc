@@ -9,7 +9,6 @@
 source ~/.bash/aliases
 source ~/.bash/tools
 source ~/.bash/completions
-source ~/.bash/paths
 source ~/.bash/config
 source ~/.bash/prompt
 
