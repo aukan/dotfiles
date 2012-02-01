@@ -17,7 +17,8 @@ function filter_unexistent {
 }
 
 # Initialize
-BASE_DIR=$(dirname $0)
+BASE_DIR=$(readlink -f $0 | xargs dirname)
+ESCAPED_BASE_DIR=$(echo $BASE_DIR | escape_slashes)
 ESCAPED_HOME=$(echo $HOME | escape_slashes)
 BACKUP_DIR=backups/$(date +%s)
 ESCAPED_BACKUP_DIR=$(echo $BACKUP_DIR | escape_slashes)
@@ -31,7 +32,8 @@ find dotfiles/* -type d | sed "s/dotfiles\//$ESCAPED_BACKUP_DIR\//" | xargs mkdi
 find dotfiles/* -type f | transform_path | filter_unexistent | sed "s/$ESCAPED_HOME\/./{$ESCAPED_HOME\/.,$ESCAPED_BACKUP_DIR\/}/" | xargs -I{} bash -c 'cp {}'
 
 # Make sure all directories exist
+find dotfiles/* -type d | transform_path | xargs -I{} bash -c '[[ -h {} ]] && echo {}' | xargs --no-run-if-empty rm
 find dotfiles/* -type d | transform_path | xargs mkdir -p
 
 # Symlink files
-find dotfiles/* -type f | sed "s/dotfiles\//{dotfiles\/,$ESCAPED_HOME\/.}/" | xargs -I{} bash -c 'ln -fs {}'
+find dotfiles/* -type f | sed "s/dotfiles\//{$ESCAPED_BASE_DIR\/dotfiles\/,$ESCAPED_HOME\/.}/" | xargs -I{} bash -c 'ln -fs {}'
