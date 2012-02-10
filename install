@@ -31,9 +31,8 @@ find dotfiles/* -type d | sed "s/dotfiles\//$ESCAPED_BACKUP_DIR\//" | xargs mkdi
 # Backup existent dotfiles
 find dotfiles/* -type f | transform_path | filter_unexistent | sed "s/$ESCAPED_HOME\/./{$ESCAPED_HOME\/.,$ESCAPED_BACKUP_DIR\/}/" | xargs -I{} bash -c 'cp {}'
 
-# Make sure all directories exist
-find dotfiles/* -type d | transform_path | xargs -I{} bash -c '[[ -h {} ]] && echo {}' | xargs --no-run-if-empty rm
-find dotfiles/* -type d | transform_path | xargs mkdir -p
+# Clean directories
+find dotfiles/* -maxdepth 0 -type d | transform_path | xargs -I{} bash -c '[[ -d {} ]] && echo {}' | xargs --no-run-if-empty rm -r
 
 # Symlink files
-find dotfiles/* -type f | sed "s/dotfiles\//{$ESCAPED_BASE_DIR\/dotfiles\/,$ESCAPED_HOME\/.}/" | xargs -I{} bash -c 'ln -fs {}'
+find dotfiles/* -maxdepth 0 | sed "s/dotfiles\//{$ESCAPED_BASE_DIR\/dotfiles\/,$ESCAPED_HOME\/.}/" | xargs -I{} bash -c 'ln -fs {}'
