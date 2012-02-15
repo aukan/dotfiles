@@ -1,0 +1,132 @@
+" Use vim instead of vi
+set nocompatible
+
+" Backup files when overwriten
+set backup
+set writebackup
+
+" Keep history
+set history=1000
+
+" Show cursor coordinates
+set ruler
+
+" Show partial command
+set showcmd
+
+" Dont match search while typing
+set incsearch
+
+" Highlight serches
+set hlsearch
+
+" Switch wrap off for everything
+set nowrap
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  " Enable file type detection.
+  filetype plugin indent on
+
+  " Set File type to 'text' for files ending in .txt
+  autocmd BufNewFile,BufRead *.txt setfiletype text
+
+  " Enable soft-wrapping for text files
+  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
+
+  " Automatically load .vimrc source when saved
+  autocmd BufWritePost .vimrc source $MYVIMRC
+
+  " For Haml
+  au! BufRead,BufNewFile *.haml         setfiletype haml
+else
+
+  set autoindent " always set autoindenting on
+
+endif " has("autocmd")
+
+if has("folding")
+  set foldenable
+  set foldmethod=syntax
+  set foldlevel=1
+  set foldnestmax=2
+  set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
+endif
+
+" Softtabs, 2 spaces
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+
+" Always display the status line
+set laststatus=2
+
+" \ is the leader character
+let mapleader = ","
+
+" Hide search highlighting
+map <Leader>h :set nohls
+
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Move lines up and down
+map <C-J> :m +1 <CR>
+map <C-K> :m -2 <CR>
+
+" Press Shift+P while in visual mode to replace the selection without
+" overwriting the default register
+vmap P p :call setreg('"', getreg('0')) <CR>
+
+" Press ^F from insert mode to insert the current file name
+imap <C-F> <C-R>=expand("%")<CR>
+
+" Display extra whitespace
+set listchars=tab:▸\ ,eol:¬
+set list
+
+" Local config
+if filereadable(".vimrc.local")
+  source .vimrc.local
+endif
+
+" Use Ack instead of Grep when available
+if executable("ack")
+  set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
+endif
+
+" Color scheme
+colorscheme railscasts
+
+" Numbers
+set number
+set numberwidth=5
+
+" Snippets are activated by Shift+Tab
+let g:snippetsEmu_key = "<S-Tab>"
+
+" Tab completion options
+" (only complete to the longest unambiguous match, and show a menu)
+set completeopt=longest,menu
+set wildmode=list:longest,list:full
+set complete=.,t
+
+" case only matters with mixed case expressions
+set ignorecase
+set smartcase
+
+" Tags
+let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
+set tags=./tags;
+
+" Generate ctags
+map <silent> <Leader>c :!ctags -R --exclude=.git --exclude=log --exclude=public/assets *<CR>
+
+" Buffers
+map <Leader>b :b#<Enter>
