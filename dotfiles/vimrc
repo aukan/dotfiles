@@ -23,35 +23,8 @@ set hlsearch
 " Switch wrap off for everything
 set nowrap
 
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  " Enable file type detection.
-  filetype plugin indent on
-
-  " Set File type to 'text' for files ending in .txt
-  autocmd BufNewFile,BufRead *.txt setfiletype text
-
-  " Enable soft-wrapping for text files
-  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-
-  " Automatically load .vimrc source when saved
-  autocmd BufWritePost .vimrc source $MYVIMRC
-
-  " For Haml
-  au! BufRead,BufNewFile *.haml         setfiletype haml
-else
-
-  set autoindent " always set autoindenting on
-
-endif " has("autocmd")
-
-if has("folding")
-  set foldenable
-  set foldmethod=syntax
-  set foldlevel=1
-  set foldnestmax=2
-  set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
-endif
+" \ is the leader character
+let mapleader = ","
 
 " Softtabs, 2 spaces
 set tabstop=2
@@ -61,9 +34,6 @@ set expandtab
 
 " Always display the status line
 set laststatus=2
-
-" \ is the leader character
-let mapleader = ","
 
 " Hide search highlighting
 map <Leader>h :set nohls
@@ -90,16 +60,6 @@ imap <C-F> <C-R>=expand("%")<CR>
 " Display extra whitespace
 set listchars=tab:▸\ ,eol:¬
 set list
-
-" Local config
-if filereadable(".vimrc.local")
-  source .vimrc.local
-endif
-
-" Use Ack instead of Grep when available
-if executable("ack")
-  set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
-endif
 
 " Color scheme
 colorscheme railscasts
@@ -130,3 +90,41 @@ map <silent> <Leader>c :!ctags -R --exclude=.git --exclude=log --exclude=public/
 
 " Buffers
 map <Leader>b :b#<Enter>
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  " Enable file type detection.
+  filetype plugin indent on
+
+  " Set File type to 'text' for files ending in .txt
+  autocmd BufNewFile,BufRead *.txt setfiletype text
+
+  " Enable soft-wrapping for text files
+  autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
+
+  " Automatically load .vimrc source when saved
+  autocmd BufWritePost .vimrc source $MYVIMRC
+
+  " For Haml
+  au! BufRead,BufNewFile *.haml setfiletype haml
+else
+  set autoindent " always set autoindenting on
+endif
+
+" Use Ack instead of Grep when available
+if executable("ack")
+  set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
+endif
+
+if has("folding")
+  set foldenable
+  set foldmethod=syntax
+  set foldlevel=1
+  set foldnestmax=2
+  set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
+endif
+
+" Local config
+if filereadable(".vimrc.local")
+  source .vimrc.local
+endif
