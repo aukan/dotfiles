@@ -23,6 +23,8 @@ alias gca='git commit -a'
 alias gco='git checkout'
 alias gb='git branch'
 alias gs='git status'
+# submodules
+alias gsu='git submodule update'
 
 # rails
 alias sc='script/console'
