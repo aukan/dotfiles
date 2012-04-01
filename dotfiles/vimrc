@@ -102,6 +102,9 @@ if has("autocmd")
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
+  " Javascript and html indentation
+  autocmd FileType javascript,html,eruby set tabstop=4 softtabstop=4 shiftwidth=4
+
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
 
@@ -128,3 +131,6 @@ endif
 if filereadable(".vimrc.local")
   source .vimrc.local
 endif
+
+" Configure notes.vim
+:let g:notes_directory = '~/notes'
