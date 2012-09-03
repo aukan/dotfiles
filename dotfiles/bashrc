@@ -6,7 +6,7 @@
 [ -z "$PS1" ] && return
 
 # Load scripts
-source ~/.bash/aliases
+source ~/.bash/aliases.sh
 source ~/.bash/tools
 source ~/.bash/completions
 source ~/.bash/config

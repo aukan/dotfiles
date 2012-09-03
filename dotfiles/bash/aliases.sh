@@ -1,3 +1,6 @@
+# Load aliases from directory
+source ~/.bash/aliases/*.sh
+
 # system
 alias install='sudo apt-get install'
 alias remove='sudo apt-get remove'
