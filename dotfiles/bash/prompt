@@ -8,4 +8,4 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-PS1='\n${debian_chroot:+($debian_chroot)}\u: \w $(parse_git_branch) \t \n \[\033[01;36m\]$\[\033[00m\] '
+PS1='\n${debian_chroot:+($debian_chroot)}\u@$HOSTNAME: \w $(parse_git_branch) \t \n \[\033[01;36m\]$\[\033[00m\] '
