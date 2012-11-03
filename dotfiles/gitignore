@@ -12,9 +12,6 @@ tags
 *.swp
 *.vimsession
 
-# Bundler
-Gemfile.lock
-
 # Rails
 db/schema.rb
 db/*.sqlite3
