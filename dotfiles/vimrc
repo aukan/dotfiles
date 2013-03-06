@@ -35,6 +35,10 @@ set expandtab
 " Always display the status line
 set laststatus=2
 
+" Prepare for copying to clipboard.
+map <Leader>y :setl nolist nonumber <CR>
+map <Leader>k :setl list number <CR>
+
 " Hide search highlighting
 map <Leader>h :set nohls
 
