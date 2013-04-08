@@ -4,6 +4,8 @@ set nocompatible
 " Backup files when overwriten
 set backup
 set writebackup
+set dir=~/.vimtemp
+set backupdir=~/.vimtemp
 
 " Keep history
 set history=1000
