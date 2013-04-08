@@ -76,186 +76,231 @@ snippet gett
 snippet yuiwidget
 	YUI.add("${1:mywidget}", function(Y) {
 
-			/* Any frequently used shortcuts, strings and constants */
-			var Lang = Y.Lang;
+		/* Any frequently used shortcuts, strings and constants */
+		var Lang = Y.Lang;
 
-			/* ${2:MyWidget} class constructor */
-			function $2(config) {
-					$2.superclass.constructor.apply(this, arguments);
+		/* ${2:MyWidget} class constructor */
+		function $2(config) {
+			$2.superclass.constructor.apply(this, arguments);
+		}
+
+		/*
+		 * Required NAME static field, to identify the Widget class and
+		 * used as an event prefix, to generate class names etc. (set to the
+		 * class name in camel case).
+		 */
+		$2.NAME = "${3:myWidget}";
+
+		/*
+		 * The attribute configuration for the widget. This defines the core user facing state of the widget
+		 */
+		$2.ATTRS = {
+
+			${4:attrA} : {
+				value: "A"                     // The default value for attrA, used if the user does not set a value during construction.
+
+				/*
+				, valueFn: "_defAttrAVal"      // Can be used as a substitute for "value", when you need access to "this" to set the default value.
+
+				, setter: "_setAttrA"          // Used to normalize attrA's value while during set. Refers to a prototype method, to make customization easier
+				, getter: "_getAttrA"          // Used to normalize attrA's value while during get. Refers to a prototype method, to make customization easier
+				, validator: "_validateAttrA"  // Used to validate attrA's value before updating it. Refers to a prototype method, to make customization easier
+
+				, readOnly: true               // Cannot be set by the end user. Can be set by the component developer at any time, using _set
+				, writeOnce: true              // Can only be set once by the end user (usually during construction). Can be set by the component developer at any time, using _set
+
+				, lazyAdd: false               // Add (configure) the attribute during initialization.
+
+				                               // You only need to set lazyAdd to false if your attribute is
+				                               // setting some other state in your setter which needs to be set during initialization
+				                               // (not generally recommended - the setter should be used for normalization.
+				                               // You should use listeners to update alternate state).
+
+				, broadcast: 1                 // Whether the attribute change event should be broadcast or not.
+				*/
 			}
 
-			/*
-			 * Required NAME static field, to identify the Widget class and
-			 * used as an event prefix, to generate class names etc. (set to the
-			 * class name in camel case).
-			 */
-			$2.NAME = "${3:myWidget}";
+			// ... attrB, attrC, attrD ... attribute configurations.
 
-			/*
-			 * The attribute configuration for the widget. This defines the core user facing state of the widget
-			 */
-			$2.ATTRS = {
+			// Can also include attributes for the super class if you want to override or add configuration parameters
+		};
 
-					${4:attrA} : {
-							value: "A"                     // The default value for attrA, used if the user does not set a value during construction.
+		/*
+		 * The HTML_PARSER static constant is used if the Widget supports progressive enhancement, and is
+		 * used to populate the configuration for the $2 instance from markup already on the page.
+		 */
+		$2.HTML_PARSER = {
 
-							/*
-							, valueFn: "_defAttrAVal"      // Can be used as a substitute for "value", when you need access to "this" to set the default value.
+			attrA: function (srcNode) {
+				// If progressive enhancement is to be supported, return the value of "attrA" based on the contents of the srcNode
+			}
 
-							, setter: "_setAttrA"          // Used to normalize attrA's value while during set. Refers to a prototype method, to make customization easier
-							, getter: "_getAttrA"          // Used to normalize attrA's value while during get. Refers to a prototype method, to make customization easier
-							, validator: "_validateAttrA"  // Used to validate attrA's value before updating it. Refers to a prototype method, to make customization easier
+		};
 
-							, readOnly: true               // Cannot be set by the end user. Can be set by the component developer at any time, using _set
-							, writeOnce: true              // Can only be set once by the end user (usually during construction). Can be set by the component developer at any time, using _set
+		/* Templates for any markup the widget uses. Usually includes {} tokens, which are replaced through 'Y.Lang.sub()' */
+		$2.MYNODE_TEMPLATE = "<div id={mynodeid}></div>";
 
-							, lazyAdd: false               // Add (configure) the attribute during initialization.
+		/* $2 extends the base Widget class */
+		Y.extend($2, Y.Widget, {
 
-																						 // You only need to set lazyAdd to false if your attribute is
-																						 // setting some other state in your setter which needs to be set during initialization
-																						 // (not generally recommended - the setter should be used for normalization.
-																						 // You should use listeners to update alternate state).
+			initializer: function() {
+				/*
+				 * initializer is part of the lifecycle introduced by
+				 * the Base class. It is invoked during construction,
+				 * and can be used to setup instance specific state or publish events which
+				 * require special configuration (if they don't need custom configuration,
+				 * events are published lazily only if there are subscribers).
+				 *
+				 * It does not need to invoke the superclass initializer.
+				 * init() will call initializer() for all classes in the hierarchy.
+				 */
 
-							, broadcast: 1                 // Whether the attribute change event should be broadcast or not.
-							*/
-					}
+				this.publish("myEvent", {
+					defaultFn: this._defMyEventFn,
+					bubbles:false
+				});
+			},
 
-					// ... attrB, attrC, attrD ... attribute configurations.
+			destructor : function() {
+				/*
+				 * destructor is part of the lifecycle introduced by
+				 * the Widget class. It is invoked during destruction,
+				 * and can be used to cleanup instance specific state.
+				 *
+				 * Anything under the boundingBox will be cleaned up by the Widget base class
+				 * We only need to clean up nodes/events attached outside of the bounding Box
+				 *
+				 * It does not need to invoke the superclass destructor.
+				 * destroy() will call initializer() for all classes in the hierarchy.
+				 */
+			},
 
-					// Can also include attributes for the super class if you want to override or add configuration parameters
-			};
+			renderUI : function() {
+				/*
+				 * renderUI is part of the lifecycle introduced by the
+				 * Widget class. Widget's renderer method invokes:
+				 *
+				 *     renderUI()
+				 *     bindUI()
+				 *     syncUI()
+				 *
+				 * renderUI is intended to be used by the Widget subclass
+				 * to create or insert new elements into the DOM.
+				 */
 
-			/*
-			 * The HTML_PARSER static constant is used if the Widget supports progressive enhancement, and is
-			 * used to populate the configuration for the $2 instance from markup already on the page.
-			 */
-			$2.HTML_PARSER = {
+				 // this._mynode = Node.create(Y.Lang.sub($2.MYNODE_TEMPLATE, {mynodeid: this.get("id") + "_mynode"}));
+			},
 
-					attrA: function (srcNode) {
-							// If progressive enhancement is to be supported, return the value of "attrA" based on the contents of the srcNode
-					}
+			bindUI : function() {
+				/*
+				 * bindUI is intended to be used by the Widget subclass
+				 * to bind any event listeners which will drive the Widget UI.
+				 *
+				 * It will generally bind event listeners for attribute change
+				 * events, to update the state of the rendered UI in response
+				 * to attribute value changes, and also attach any DOM events,
+				 * to activate the UI.
+				 */
 
-			};
+				 // this.after("attrAChange", this._afterAttrAChange);
+			},
 
-			/* Templates for any markup the widget uses. Usually includes {} tokens, which are replaced through `Y.Lang.sub()` */
-			$2.MYNODE_TEMPLATE = "<div id={mynodeid}></div>";
+			syncUI : function() {
+				/*
+				 * syncUI is intended to be used by the Widget subclass to
+				 * update the UI to reflect the initial state of the widget,
+				 * after renderUI. From there, the event listeners we bound above
+				 * will take over.
+				 */
 
-			/* $2 extends the base Widget class */
-			Y.extend($2, Y.Widget, {
+				// this._uiSetAttrA(this.get("attrA"));
+			},
 
-					initializer: function() {
-							/*
-							 * initializer is part of the lifecycle introduced by
-							 * the Base class. It is invoked during construction,
-							 * and can be used to setup instance specific state or publish events which
-							 * require special configuration (if they don't need custom configuration,
-							 * events are published lazily only if there are subscribers).
-							 *
-							 * It does not need to invoke the superclass initializer.
-							 * init() will call initializer() for all classes in the hierarchy.
-							 */
+			// Beyond this point is the $2 specific application and rendering logic
 
-							 this.publish("myEvent", {
-									defaultFn: this._defMyEventFn,
-									bubbles:false
-							 });
-					},
+			/* Attribute state supporting methods (see attribute config above) */
 
-					destructor : function() {
-							/*
-							 * destructor is part of the lifecycle introduced by
-							 * the Widget class. It is invoked during destruction,
-							 * and can be used to cleanup instance specific state.
-							 *
-							 * Anything under the boundingBox will be cleaned up by the Widget base class
-							 * We only need to clean up nodes/events attached outside of the bounding Box
-							 *
-							 * It does not need to invoke the superclass destructor.
-							 * destroy() will call initializer() for all classes in the hierarchy.
-							 */
-					},
+			_defAttrAVal : function() {
+				// this.get("id") + "foo";
+			},
 
-					renderUI : function() {
-							/*
-							 * renderUI is part of the lifecycle introduced by the
-							 * Widget class. Widget's renderer method invokes:
-							 *
-							 *     renderUI()
-							 *     bindUI()
-							 *     syncUI()
-							 *
-							 * renderUI is intended to be used by the Widget subclass
-							 * to create or insert new elements into the DOM.
-							 */
+			_setAttrA : function(attrVal, attrName) {
+				// return attrVal.toUpperCase();
+			},
 
-							 // this._mynode = Node.create(Y.Lang.sub($2.MYNODE_TEMPLATE, {mynodeid: this.get("id") + "_mynode"}));
-					},
+			_getAttrA : function(attrVal, attrName) {
+				// return attrVal.toUpperCase();
+			},
 
-					bindUI : function() {
-							/*
-							 * bindUI is intended to be used by the Widget subclass
-							 * to bind any event listeners which will drive the Widget UI.
-							 *
-							 * It will generally bind event listeners for attribute change
-							 * events, to update the state of the rendered UI in response
-							 * to attribute value changes, and also attach any DOM events,
-							 * to activate the UI.
-							 */
+			_validateAttrA : function(attrVal, attrName) {
+				// return Lang.isString(attrVal);
+			},
 
-							 // this.after("attrAChange", this._afterAttrAChange);
-					},
+			/* Listeners, UI update methods */
 
-					syncUI : function() {
-							/*
-							 * syncUI is intended to be used by the Widget subclass to
-							 * update the UI to reflect the initial state of the widget,
-							 * after renderUI. From there, the event listeners we bound above
-							 * will take over.
-							 */
+			_afterAttrAChange : function(e) {
+				/* Listens for changes in state, and asks for a UI update (controller). */
 
-							// this._uiSetAttrA(this.get("attrA"));
-					},
+				// this._uiSetAttrA(e.newVal);
+			},
 
-					// Beyond this point is the $2 specific application and rendering logic
+			_uiSetAttrA : function(val) {
+				/* Update the state of attrA in the UI (view) */
 
-					/* Attribute state supporting methods (see attribute config above) */
+				// this._mynode.set("innerHTML", val);
+			},
 
-					_defAttrAVal : function() {
-							// this.get("id") + "foo";
-					},
+			_defMyEventFn : function(e) {
+				// The default behavior for the "myEvent" event.
+			}
+		});
 
-					_setAttrA : function(attrVal, attrName) {
-							// return attrVal.toUpperCase();
-					},
-
-					_getAttrA : function(attrVal, attrName) {
-							// return attrVal.toUpperCase();
-					},
-
-					_validateAttrA : function(attrVal, attrName) {
-							// return Lang.isString(attrVal);
-					},
-
-					/* Listeners, UI update methods */
-
-					_afterAttrAChange : function(e) {
-							/* Listens for changes in state, and asks for a UI update (controller). */
-
-							// this._uiSetAttrA(e.newVal);
-					},
-
-					_uiSetAttrA : function(val) {
-							/* Update the state of attrA in the UI (view) */
-
-							// this._mynode.set("innerHTML", val);
-					},
-
-					_defMyEventFn : function(e) {
-							// The default behavior for the "myEvent" event.
-					}
-			});
-
-			Y.namespace("MyApp").$2 = $2;
+		Y.namespace("MyApp").$2 = $2;
 
 	}, "${4:3.2.0}", {requires:["widget"]});
+# YUI View
+snippet yuiview
+	YUI().use('view', 'model-list', 'node', function(Y){
+		Y.Global.${1:myView}View = Y.Base.create('$1View', Y.View, [], {
 
+			containerTemplate:
+				'${3}<div></div>',
+
+			template :
+				'<div></div>',
+
+			initializer : function () {
+				var ${2:myRecord}Records = this.get('modelList');
+
+				$2Records.after(['add', 'remove', 'reset'], this.render, this);
+			},
+
+			render : function(){
+				var view = this;
+				var container = this.get('container');
+				var $2Records = this.get('modelList');
+				var viewNode = Y.Node.create(this.containerTemplate);
+
+				container.append( viewNode );
+
+				$2Records.each( function($2Record){
+					var $2Node = Y.Node.create( Y.Lang.sub(view.template, $2Record.toJSON()) );
+					viewNode.append( $2Node );
+				});
+
+				if (!container.inDoc()) {
+					Y.one('body').append(container);
+				}
+			},
+		},
+		{
+			ATTRS: {
+				// Override the default container attribute.
+				container: {
+					valueFn: function () {
+						return Y.Node.create('<div></div>');
+					}
+				}
+			}
+		});
+	});
