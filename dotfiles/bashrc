@@ -11,6 +11,7 @@ source ~/.bash/tools.sh
 source ~/.bash/completions
 source ~/.bash/config
 source ~/.bash/prompt
+source ~/.bash/utilities/remote_host_utilities.sh
 
 # Load localrc
 if [ -f ~/.localrc ]; then
