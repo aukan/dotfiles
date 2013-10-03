@@ -260,47 +260,71 @@ snippet yuiwidget
 	}, "${4:3.2.0}", {requires:["widget"]});
 # YUI View
 snippet yuiview
-	YUI().use('view', 'model-list', 'node', function(Y){
-		Y.Global.${1:myView}View = Y.Base.create('$1View', Y.View, [], {
+	YUI.add('${1:moduleName}', function (Y) {
 
-			containerTemplate:
-				'${3}<div></div>',
+		function ${2:className} (config) {
+			$2.superclass.constructor.apply(this, arguments);
+		}
 
-			template :
-				'<div></div>',
+		$2.NAME = 'users';
 
-			initializer : function () {
-				var ${2:myRecord}Records = this.get('modelList');
+		Y.extend($2, Y.View, {
+			template : '<div>${5}</div>',
 
-				$2Records.after(['add', 'remove', 'reset'], this.render, this);
-			},
+			render : function render () {
+				var container = this.get('container'),
+					html      = this.template;
 
-			render : function(){
-				var view = this;
-				var container = this.get('container');
-				var $2Records = this.get('modelList');
-				var viewNode = Y.Node.create(this.containerTemplate);
+				// Render this view's HTML into the container element.
+				container.setHTML(html);
 
-				container.append( viewNode );
-
-				$2Records.each( function($2Record){
-					var $2Node = Y.Node.create( Y.Lang.sub(view.template, $2Record.toJSON()) );
-					viewNode.append( $2Node );
-				});
-
+				// Append the container element to the DOM if it's not on the page already.
 				if (!container.inDoc()) {
 					Y.one('body').append(container);
 				}
+
+				this.bindUI();
+
+				return this;
 			},
-		},
-		{
-			ATTRS: {
-				// Override the default container attribute.
-				container: {
-					valueFn: function () {
-						return Y.Node.create('<div></div>');
+
+			bindUI : function bindUI () {
+			},
+
+		}, {
+			ATTRS : {
+				container : {
+					valueFn : function () {
+						return Y.Node.create('<div />');
 					}
 				}
 			}
 		});
+
+		Y.namespace('Views').${3:ViewFinalName} = $2;
+	}, '0.0.0', {
+		'requires' : ['view'${4:requirements}]
 	});
+# YUI module
+snippet yuimodule
+	var YUI = require('yui').YUI;
+
+	YUI.add('${1:moduleName}', function (Y) {
+
+		function ${2:className}(config) {
+			$2.superclass.constructor.apply(this, arguments);
+		}
+
+		$2.NAME = 'users';
+
+		Y.extend($2, Y.SocketDataApi, {${4}});
+
+		Y.$2 = $2;
+	}, '0.0.0', {
+		'requires' : ['${3:requirements}']
+	});
+# nodejs require
+snippet require
+	require('${1:packageName}');${2}
+snippet lrequire
+	require(process.cwd() + '/${1:path}');
