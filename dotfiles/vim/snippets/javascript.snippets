@@ -40,9 +40,9 @@ snippet case
 	${3}
 # for (...) {...}
 snippet for
-	for (var ${2:i} = 0; $2 < ${1:Things}.length; $2${3:++}) {
+	for (var ${2:i} = 0; $2 < ${1:Things}.length; $2${3:+=1}) {
 		${4:$1[$2]}
-	};
+	}
 # for (...) {...} (Improved Native For-Loop)
 snippet forr
 	for (var ${2:i} = ${1:Things}.length - 1; $2 >= 0; $2${3:--}) {
@@ -260,51 +260,46 @@ snippet yuiwidget
 	}, "${4:3.2.0}", {requires:["widget"]});
 # YUI View
 snippet yuiview
-	YUI.add('${1:moduleName}', function (Y) {
+	function ${1:className} (config) {
+		$1.superclass.constructor.apply(this, arguments);
+	}
 
-		function ${2:className} (config) {
-			$2.superclass.constructor.apply(this, arguments);
-		}
+	$1.NAME = 'users';
 
-		$2.NAME = 'users';
+	Y.extend($1, Y.View, {
+		template : '<div>${4}</div>',
 
-		Y.extend($2, Y.View, {
-			template : '<div>${5}</div>',
+		render : function render () {
+			var container = this.get('container'),
+				html      = this.template;
 
-			render : function render () {
-				var container = this.get('container'),
-					html      = this.template;
+			// Render this view's HTML into the container element.
+			container.setHTML(html);
 
-				// Render this view's HTML into the container element.
-				container.setHTML(html);
+			// Append the container element to the DOM if it's not on the page already.
+			if (!container.inDoc()) {
+				Y.one('body').append(container);
+			}
 
-				// Append the container element to the DOM if it's not on the page already.
-				if (!container.inDoc()) {
-					Y.one('body').append(container);
-				}
+			this.bindUI();
 
-				this.bindUI();
+			return this;
+		},
 
-				return this;
-			},
+		bindUI : function bindUI () {
+		},
 
-			bindUI : function bindUI () {
-			},
-
-		}, {
-			ATTRS : {
-				container : {
-					valueFn : function () {
-						return Y.Node.create('<div />');
-					}
+	}, {
+		ATTRS : {
+			container : {
+				valueFn : function () {
+					return Y.Node.create('<div />');
 				}
 			}
-		});
-
-		Y.namespace('Views').${3:ViewFinalName} = $2;
-	}, '0.0.0', {
-		'requires' : ['view'${4:requirements}]
+		}
 	});
+
+	Y.namespace('Views').${2:ViewFinalName} = $1;
 # YUI module
 snippet yuimodule
 	var YUI = require('yui').YUI;
@@ -315,9 +310,9 @@ snippet yuimodule
 			$2.superclass.constructor.apply(this, arguments);
 		}
 
-		$2.NAME = 'users';
+		$2.NAME = '$1';
 
-		Y.extend($2, Y.SocketDataApi, {${4}});
+		Y.extend($2, ${4}, {${5}});
 
 		Y.$2 = $2;
 	}, '0.0.0', {
