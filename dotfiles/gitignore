@@ -3,6 +3,8 @@
 
 # RVM
 .rvmrc
+.ruby-gemset
+.ruby-version
 
 # ctags
 tags
