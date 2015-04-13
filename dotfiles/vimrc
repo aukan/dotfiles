@@ -109,13 +109,16 @@ if has("autocmd")
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
   " Javascript and html indentation
-  autocmd FileType javascript,html,eruby set tabstop=4 softtabstop=4 shiftwidth=4
+  autocmd FileType javascript,html,eruby,hbs set tabstop=4 softtabstop=4 shiftwidth=4
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
 
   " For Haml
   au! BufRead,BufNewFile *.haml setfiletype haml
+
+  " For Handlebars
+  au! BufRead,BufNewFile *.hbs setfiletype html
 else
   set autoindent " always set autoindenting on
 endif
