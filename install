@@ -17,7 +17,7 @@ function filter_unexistent {
 }
 
 # Initialize
-BASE_DIR=$(readlink -f $0 | xargs dirname)
+BASE_DIR=$(pwd)
 ESCAPED_BASE_DIR=$(echo $BASE_DIR | escape_slashes)
 ESCAPED_HOME=$(echo $HOME | escape_slashes)
 BACKUP_DIR=backups/$(date +%s)
