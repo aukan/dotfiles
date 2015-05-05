@@ -24,3 +24,6 @@ aukan/*
 
 # Passenger
 tmp/restart.txt
+
+# Nodejs
+node_modules
