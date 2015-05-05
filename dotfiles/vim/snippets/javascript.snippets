@@ -1,12 +1,6 @@
-# Prototype
-snippet proto
-	${1:class_name}.prototype.${2:method_name} =
-	function(${3:first_argument}) {
-		${4:// body...}
-	};
 # Function
-snippet fun
-	function ${1:function_name} (${2:argument}) {
+snippet func
+	function ${1} (${2:argument}) {
 		${3:// body...}
 	}
 # Anonymous Function
@@ -14,7 +8,9 @@ snippet f
 	function(${1}) {${2}};
 # if
 snippet if
-	if (${1:true}) {${2}};
+	if (${1:true}) {
+		${2}
+	};
 # if ... else
 snippet ife
 	if (${1:true}) {${2}}
@@ -326,6 +322,14 @@ snippet desc
 snippet it
 	it('${1:should}', function (${2:done}) {
 		${3}
+	});
+snippet before
+	before(function (done) {
+		${1}
+	});
+snippet after
+	after(function (done) {
+		${1}
 	});
 # nodejs require
 snippet require
