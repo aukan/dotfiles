@@ -4,7 +4,7 @@ source ~/.bash/aliases/*.sh
 # system
 alias install='sudo apt-get install'
 alias remove='sudo apt-get remove'
-alias search='sudo apt-cache search'
+alias search='apt-cache search'
 
 # edit bash configuration
 alias bashrc='vim ~/.bashrc'
