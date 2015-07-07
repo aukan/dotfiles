@@ -1,5 +1,5 @@
 # Load aliases from directory
-source ~/.bash/aliases/*.sh
+# source ~/.bash/aliases/*.sh
 
 # system
 alias install='sudo apt-get install'
