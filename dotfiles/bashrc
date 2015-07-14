@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# Make sure that no key combinations are overwritten
+stty -ixon
+
 # Load scripts
 source ~/.bash/aliases.sh
 source ~/.bash/tools.sh
