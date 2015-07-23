@@ -109,7 +109,7 @@ if has("autocmd")
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
   " Javascript and html indentation
-  autocmd FileType javascript,html,eruby,hbs set tabstop=4 softtabstop=4 shiftwidth=4
+  autocmd FileType python,javascript,html,eruby,hbs set tabstop=4 softtabstop=4 shiftwidth=4
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
