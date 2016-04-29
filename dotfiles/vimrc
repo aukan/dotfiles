@@ -1,6 +1,9 @@
 " Use vim instead of vi
 set nocompatible
 
+" Backspace behavior
+set backspace=indent,eol,start
+
 " Backup files when overwriten
 set backup
 set writebackup
@@ -27,6 +30,9 @@ set nowrap
 
 " \ is the leader character
 let mapleader = ","
+
+" Textwidth
+set textwidth=120
 
 " Softtabs, 2 spaces
 set tabstop=2
