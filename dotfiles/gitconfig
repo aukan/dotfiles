@@ -12,8 +12,5 @@
   whitespace = nowarn
 [format]
   pretty = %C(yellow)%h %C(green)%an%Creset %s %C(red)(%cr)%Creset
-[user]
-  email = pbglezc@gmail.com
-  name = Pablo Gonzalez
 [push]
   default = simple

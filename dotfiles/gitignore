@@ -7,7 +7,7 @@
 .ruby-version
 
 # ctags
-tags
+.tags
 
 # VIM Files
 *.swo
@@ -19,8 +19,8 @@ db/schema.rb
 db/*.sqlite3
 log/*.log
 
-# My own files
-aukan/*
+# Test files
+playground/*
 
 # Passenger
 tmp/restart.txt

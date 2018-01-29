@@ -1,6 +1,52 @@
 " Use vim instead of vi
 set nocompatible
 
+" Vundle setup
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'  " required
+
+    " Colorscheme
+    Plugin 'altercation/vim-colors-solarized'
+
+    Plugin 'xolox/vim-misc'
+    Plugin 'xolox/vim-notes'
+
+    " Apache thrift highlighting
+    Plugin 'solarnz/thrift.vim'
+
+    " Snippets
+    Plugin 'SirVer/ultisnips'
+    Plugin 'aukan/vim-snippets'
+
+    " Swift highlighting
+    Plugin 'toyamarinyon/vim-swift'
+
+    " Ctrlp
+    Plugin 'ctrlpvim/ctrlp.vim'
+
+    " Tcomment
+    Plugin 'tomtom/tcomment_vim'
+
+    " Fugitive (git wrapper)
+    Plugin 'tpope/vim-fugitive'
+
+    " Code structure browser
+    Plugin 'majutsushi/tagbar'
+
+    " Tags
+    Plugin 'xolox/vim-easytags'
+
+    " Check syntaxis
+    Plugin 'vim-syntastic/syntastic'
+call vundle#end()
+filetype plugin indent on
+
+" UTF-8 Encoding
+scriptencoding utf-8
+set encoding=utf-8
+
 " Backspace behavior
 set backspace=indent,eol,start
 
@@ -34,10 +80,10 @@ let mapleader = ","
 " Textwidth
 set textwidth=120
 
-" Softtabs, 2 spaces
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+" Softtabs, 4 spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 " Always display the status line
@@ -56,7 +102,10 @@ map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 " Opens a tab edit command with the path of the currently edited file filled in
 " Normal mode: <Leader>t
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <Leader>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Remap <F5> in ctrlp
+map <leader>p :CtrlPClearCache<cr>
 
 " Move lines up and down
 map <C-J> :m +1 <CR>
@@ -74,14 +123,16 @@ set listchars=tab:▸\ ,eol:¬
 set list
 
 " Color scheme
-colorscheme railscasts
+syntax enable
+set background=dark
+silent! colorscheme solarized
 
 " Numbers
 set number
 set numberwidth=5
 
 " Snippets are activated by Shift+Tab
-let g:snippetsEmu_key = "<S-Tab>"
+" let g:snippetsEmu_key = "<S-Tab>"
 
 " Tab completion options
 " (only complete to the longest unambiguous match, and show a menu)
@@ -92,13 +143,6 @@ set complete=.,t
 " case only matters with mixed case expressions
 set ignorecase
 set smartcase
-
-" Tags
-let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
-set tags=./tags;
-
-" Generate ctags
-map <silent> <Leader>c :!ctags -R --exclude=.git --exclude=log --exclude=public/assets *<CR>
 
 " Buffers
 map <Leader>b :b#<Enter>
@@ -114,8 +158,9 @@ if has("autocmd")
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
 
-  " Javascript and html indentation
-  autocmd FileType python,javascript,html,eruby,hbs set tabstop=4 softtabstop=4 shiftwidth=4
+  " Smaller tabstop
+  autocmd FileType ruby set tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType scala set tabstop=4 softtabstop=4 shiftwidth=4
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
@@ -148,4 +193,13 @@ if filereadable(".vimrc.local")
 endif
 
 " Configure notes.vim
-:let g:notes_directory = '~/notes/user'
+:let g:notes_directories = ['~/notes/user']
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
