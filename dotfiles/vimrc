@@ -81,9 +81,9 @@ let mapleader = ","
 set textwidth=120
 
 " Softtabs, 4 spaces
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 
 " Always display the status line
@@ -157,10 +157,6 @@ if has("autocmd")
 
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-
-  " Smaller tabstop
-  autocmd FileType ruby set tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd FileType scala set tabstop=4 softtabstop=4 shiftwidth=4
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
