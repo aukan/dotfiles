@@ -23,5 +23,4 @@ function install_vim_debian {
 function install_vim_osx {
     echo "=> Installing Vim..."
     brew install vim
-    vim +PluginInstall +qall
 }
