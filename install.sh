@@ -26,7 +26,7 @@ find dotfiles/* -maxdepth 0 -type d | \
     xargs -I{} bash -c '([[ -e {} ]] && rm -rf {}) || true'
 
 # Install tools
-install_vim
+install_neovim
 install_spacevim
 install_tmux
 install_ctags
