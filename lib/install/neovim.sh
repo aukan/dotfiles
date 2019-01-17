@@ -15,8 +15,5 @@ function install_neovim_osx {
     pip2 install neovim --upgrade
     pip5 install neovim --upgrade
 
-    echo "let g:python2_host_prog = '/usr/local/bin/python'" >> ~/.config/nvim/init.vim
-    echo "let g:python3_host_prog = '/usr/local/bin/python3'" >> ~/.config/nvim/init.vim
-
-    brew install neovim/neovim/neovim
+    brew install neovim
 }
