@@ -13,7 +13,7 @@ function install_neovim_osx {
     brew install python
     brew install python3
     pip2 install neovim --upgrade
-    pip5 install neovim --upgrade
+    pip3 install neovim --upgrade
 
     brew install neovim
 }
