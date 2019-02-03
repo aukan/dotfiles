@@ -27,3 +27,6 @@ tmp/restart.txt
 
 # Nodejs
 node_modules
+
+# IntelliJ Idea
+.idea
