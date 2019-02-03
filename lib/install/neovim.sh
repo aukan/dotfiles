@@ -16,4 +16,6 @@ function install_neovim_osx {
     pip3 install neovim --upgrade
 
     brew install neovim
+    ln -s /usr/local/bin/nvim /usr/local/bin/vim
+    nvim +PluginInstall +qall
 }

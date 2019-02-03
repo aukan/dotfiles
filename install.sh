@@ -17,21 +17,18 @@ install_pkg_manager
 install_git
 
 # Initialize
-git submodule init
-git submodule update
+git clone https://github.com/VundleVim/Vundle.vim.git dotfiles/config/nvim/bundle/Vundle.vim
 
 # Clean directories
 find dotfiles/* -maxdepth 0 -type d | \
     sed "s|dotfiles/|$HOME/.|" | \
     xargs -I{} bash -c '([[ -e {} ]] && rm -rf {}) || true'
 
-# Install tools
-install_neovim
-install_spacevim
-install_tmux
-install_ctags
-
 # Copy files
 find dotfiles/* -type d -maxdepth 0 | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp -rf {}'
 find dotfiles/* -type f -maxdepth 0 | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp {}'
 
+# Install tools
+install_neovim
+install_tmux
+install_ctags
