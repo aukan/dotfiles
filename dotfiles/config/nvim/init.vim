@@ -1,47 +1,62 @@
 " Use vim instead of vi
 set nocompatible
 
-" Vundle setup
-filetype off
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin()
-    Plugin 'VundleVim/Vundle.vim'  " required
+" vim-plug setup
+call plug#begin('~/.local/share/nvim/plugged')
+    " To detect the root of the project
+    Plug 'airblade/vim-rooter'
 
     " Colorscheme
-    Plugin 'altercation/vim-colors-solarized'
+    Plug 'altercation/vim-colors-solarized'
 
-    Plugin 'xolox/vim-misc'
-    Plugin 'xolox/vim-notes'
+    Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-notes'
 
     " Apache thrift highlighting
-    Plugin 'solarnz/thrift.vim'
+    Plug 'solarnz/thrift.vim'
 
     " Snippets
-    Plugin 'SirVer/ultisnips'
-    Plugin 'aukan/vim-snippets'
+    Plug 'SirVer/ultisnips'
+    Plug 'aukan/vim-snippets'
 
     " Swift highlighting
-    Plugin 'toyamarinyon/vim-swift'
+    Plug 'toyamarinyon/vim-swift'
 
-    " Ctrlp
-    Plugin 'ctrlpvim/ctrlp.vim'
+    " Fuzzy finder
+    set rtp+=/usr/local/opt/fzf
+    Plug 'junegunn/fzf.vim'
 
     " Tcomment
-    Plugin 'tomtom/tcomment_vim'
+    Plug 'tomtom/tcomment_vim'
 
     " Fugitive (git wrapper)
-    Plugin 'tpope/vim-fugitive'
+    Plug 'tpope/vim-fugitive'
 
     " Code structure browser
-    Plugin 'majutsushi/tagbar'
+    Plug 'majutsushi/tagbar'
 
     " Tags
-    Plugin 'xolox/vim-easytags'
+    Plug 'xolox/vim-easytags'
 
     " Check syntaxis
-    Plugin 'vim-syntastic/syntastic'
-call vundle#end()
-filetype plugin indent on
+    Plug 'vim-syntastic/syntastic'
+
+    " Java lang
+    Plug 'artur-shaik/vim-javacomplete2'
+
+    " Autocomplete
+    Plug 'Shougo/deoplete.nvim'
+call plug#end()
+
+" Plugin configuration
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option({
+\ 'auto_complete_delay': 200,
+\ 'smart_case': v:true,
+\ })
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 " UTF-8 Encoding
 scriptencoding utf-8
@@ -80,7 +95,7 @@ let mapleader = ","
 " Textwidth
 set textwidth=120
 
-" Softtabs, 4 spaces
+" Softtabs, 2 spaces
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -88,6 +103,9 @@ set expandtab
 
 " Always display the status line
 set laststatus=2
+
+" Key Mappings
+map <Leader>2 :TagbarToggle<CR>
 
 " Prepare for copying to clipboard.
 map <Leader>y :setl nolist nonumber <CR>
@@ -104,12 +122,12 @@ map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 " Normal mode: <Leader>t
 map <Leader>t :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
-" Remap <F5> in ctrlp
-map <leader>p :CtrlPClearCache<cr>
-
 " Move lines up and down
 map <C-J> :m +1 <CR>
 map <C-K> :m -2 <CR>
+
+" Fuzzy finder
+map <C-P> :FZF <CR>
 
 " Press Shift+P while in visual mode to replace the selection without
 " overwriting the default register
@@ -134,11 +152,8 @@ set numberwidth=5
 " Snippets are activated by Shift+Tab
 " let g:snippetsEmu_key = "<S-Tab>"
 
-" Tab completion options
-" (only complete to the longest unambiguous match, and show a menu)
-set completeopt=longest,menu
-set wildmode=list:longest,list:full
-set complete=.,t
+" Completion options
+set completeopt=longest,menuone
 
 " case only matters with mixed case expressions
 set ignorecase
@@ -151,12 +166,16 @@ map <Leader>b :b#<Enter>
 if has("autocmd")
   " Enable file type detection.
   filetype plugin indent on
+  " set omnifunc=syntaxcomplete#Complete
 
   " Set File type to 'text' for files ending in .txt
   autocmd BufNewFile,BufRead *.txt setfiletype text
 
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
+
+  " Enable java plugins
+  autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
@@ -183,11 +202,6 @@ if has("folding")
   " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
 endif
 
-" Local config
-if filereadable(".vimrc.local")
-  source .vimrc.local
-endif
-
 " Configure notes.vim
 :let g:notes_directories = ['~/notes/user']
 
@@ -198,4 +212,3 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-
