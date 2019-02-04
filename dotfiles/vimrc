@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugged')
 
     " Colorscheme
     Plug 'altercation/vim-colors-solarized'
+    Plug 'morhetz/gruvbox'
 
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-notes'
@@ -168,7 +169,7 @@ set list
 " Color scheme
 syntax enable
 set background=dark
-silent! colorscheme solarized
+silent! colorscheme gruvbox
 
 " Numbers
 set number
