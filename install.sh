@@ -19,8 +19,6 @@ while [[ $# > 0 ]]; do
   esac
 done
 
-echo $configOnly
-
 # Source files
 for f in lib/install/*.sh; do source $f; done
 

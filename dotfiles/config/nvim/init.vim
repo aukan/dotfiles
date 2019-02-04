@@ -38,15 +38,24 @@ call plug#begin('~/.local/share/nvim/plugged')
     " Tags
     Plug 'xolox/vim-easytags'
 
-    " Check syntaxis
-    Plug 'vim-syntastic/syntastic'
+    " Syntax lint
+    Plug 'w0rp/ale'
 
     " Java lang
     Plug 'artur-shaik/vim-javacomplete2'
 
     " Autocomplete
     Plug 'Shougo/deoplete.nvim'
+
+    " File Exploring
+    Plug 'scrooloose/nerdtree'
+
+    " Java code style
+    Plug 'google/vim-maktaba'
+    Plug 'google/vim-codefmt'
+    Plug 'google/vim-glaive'
 call plug#end()
+call glaive#Install()
 
 " Plugin configuration
 let g:deoplete#enable_at_startup = 1
@@ -54,9 +63,10 @@ call deoplete#custom#option({
 \ 'auto_complete_delay': 200,
 \ 'smart_case': v:true,
 \ })
-
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
+let home = $HOME
+let gjf = "java -jar ".home."/.local/share/gjf/google-java-format-all-deps.jar"
+Glaive codefmt plugin[mappings]
+Glaive codefmt google_java_executable=`g:gjf`
 
 " UTF-8 Encoding
 scriptencoding utf-8
@@ -105,6 +115,7 @@ set expandtab
 set laststatus=2
 
 " Key Mappings
+map <Leader>1 :NERDTreeToggle<CR>
 map <Leader>2 :TagbarToggle<CR>
 
 " Prepare for copying to clipboard.
@@ -176,6 +187,7 @@ if has("autocmd")
 
   " Enable java plugins
   autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  autocmd FileType java AutoFormatBuffer google-java-format
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
