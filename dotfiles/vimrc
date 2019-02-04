@@ -122,6 +122,15 @@ set laststatus=2
 " Key Mappings
 map <Leader>1 :NERDTreeToggle<CR>
 map <Leader>2 :TagbarToggle<CR>
+map <Leader>c :Commands<CR>
+map <Leader>da :JDBAttach<CR>
+map <Leader>de :JDBDetach<CR>
+map <Leader>db :JDBBreakpointOnLine<CR>
+map <Leader>dB :JDBClearBreakpointOnLine<CR>
+map <Leader>dn :JDBStepOver<CR>
+map <Leader>dN :JDBStepIn<CR>
+map <Leader>dr :JDBCommand 
+map <Leader>dc :JDBContinue<CR>
 
 " Prepare for copying to clipboard.
 map <Leader>y :setl nolist nonumber <CR>
@@ -212,11 +221,12 @@ if executable("ack")
 endif
 
 if has("folding")
-  " set foldenable
-  " set foldmethod=syntax
-  " set foldlevel=1
-  " set foldnestmax=2
-  " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
+  set foldenable
+  set foldmethod=syntax
+  set foldmethod=syntax
+  set foldlevel=99
+  set foldnestmax=2
+  set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
 endif
 
 " Configure notes.vim
