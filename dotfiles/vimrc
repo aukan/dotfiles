@@ -2,7 +2,7 @@
 set nocompatible
 
 " vim-plug setup
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
     " To detect the root of the project
     Plug 'airblade/vim-rooter'
 
@@ -46,6 +46,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
     " Autocomplete
     Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'roxma/nvim-yarp'
 
     " File Exploring
     Plug 'scrooloose/nerdtree'

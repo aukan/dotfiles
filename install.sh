@@ -45,12 +45,8 @@ if [ $configOnly = "false" ]; then
   install_pkg_manager
   install_git
 
-  # Initialize
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
   # Install tools
-  install_neovim
+  install_vim
   install_tmux
   install_ctags
 fi

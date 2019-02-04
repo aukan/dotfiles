@@ -23,6 +23,10 @@ function install_neovim_osx {
     $(brew --prefix)/opt/fzf/install
     mkdir -p ~/.local/share/gjf && wget -O ~/.local/share/gjf/google-java-format-all-deps.jar $gjf
 
+    # Plugin Manager
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
     brew install neovim
     ln -s /usr/local/bin/nvim /usr/local/bin/vim
     nvim +PlugInstall +qall
