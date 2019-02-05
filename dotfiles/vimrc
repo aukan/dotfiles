@@ -74,6 +74,12 @@ let gjf = "java -jar ".home."/.local/share/gjf/google-java-format-all-deps.jar"
 Glaive codefmt plugin[mappings]
 Glaive codefmt google_java_executable=`g:gjf`
 
+" javacomplete2 configuration
+let g:JavaComplete_StaticImportsAtTop = 1
+let g:JavaComplete_ImportDefault = -1
+let g:JavaComplete_ImportSortType = 'packageName'
+let g:JavaComplete_ImportOrder = ['*']
+
 " UTF-8 Encoding
 scriptencoding utf-8
 set encoding=utf-8

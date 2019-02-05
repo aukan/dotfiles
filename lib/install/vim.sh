@@ -31,7 +31,7 @@ function install_vim_osx {
     pip3 install pynvim --upgrade
     brew install fzf
     $(brew --prefix)/opt/fzf/install
-    if [ -z ~/.local/share/gjf/google-java-format-all-deps.jar ]; then
+    if [ ! -f ~/.local/share/gjf/google-java-format-all-deps.jar ]; then
       mkdir -p ~/.local/share/gjf && wget -O ~/.local/share/gjf/google-java-format-all-deps.jar $gjf
     fi
 
