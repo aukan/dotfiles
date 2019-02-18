@@ -4,6 +4,7 @@ function showHelp () {
   echo "Usage: ./install.sh [options]"
 }
 
+clean=false
 configOnly=false
 while [[ $# > 0 ]]; do
   key="$1"
@@ -16,11 +17,16 @@ while [[ $# > 0 ]]; do
     -c|--configOnly)
       configOnly=true
       shift;
+      ;;
+    --clean)
+      clean=true
+      shift;
+      ;;
   esac
 done
 
 # Source files
-for f in lib/install/*.sh; do source $f; done
+for f in lib/*.sh; do source $f; done
 
 # Script that installs the dotfiles
 #
@@ -31,22 +37,18 @@ for f in lib/install/*.sh; do source $f; done
 BASE_DIR=$(dirname $BASH_SOURCE)
 cd $BASE_DIR
 
-# Clean directories
-find dotfiles/* -maxdepth 0 -type d | \
-    sed "s|dotfiles/|$HOME/.|" | \
-    xargs -I{} bash -c '([[ -e {} ]] && rm -rf {}) || true'
+if [ $clean = "true" ]; then
+  # Clean directories
+  find dotfiles/* -maxdepth 0 -type d | \
+      sed "s|dotfiles/|$HOME/.|" | \
+      xargs -I{} bash -c '([[ -e {} ]] && rm -rf {}) || true'
+fi
 
 # Copy files
-find dotfiles/* -type d -maxdepth 0 | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp -rf {}'
-find dotfiles/* -type f -maxdepth 0 | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp {}'
+find dotfiles/* -type d | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'mkdir -p {}'
+find dotfiles/* -type f | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp {}'
+find dotfiles/* -type l | sed "s|dotfiles\/|{$BASE_DIR\/dotfiles\/,$HOME\/.}|" | xargs -I{} bash -c 'cp -a {}'
 
 if [ $configOnly = "false" ]; then
-  # Install prerequisites
-  install_pkg_manager
-  install_git
-
-  # Install tools
-  install_vim
-  install_tmux
-  install_ctags
+  install_tools
 fi

@@ -37,7 +37,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'majutsushi/tagbar'
 
     " Tags
-    Plug 'xolox/vim-easytags'
+    Plug 'ludovicchabant/vim-gutentags'
 
     " Syntax lint
     Plug 'w0rp/ale'
@@ -45,34 +45,18 @@ call plug#begin('~/.vim/plugged')
     " Java lang
     Plug 'artur-shaik/vim-javacomplete2'
 
-    " Autocomplete
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/vim-hug-neovim-rpc'
-    Plug 'roxma/nvim-yarp'
-
     " File Exploring
     Plug 'scrooloose/nerdtree'
 
-    " Java code style
-    Plug 'google/vim-maktaba'
-    Plug 'google/vim-codefmt'
-    Plug 'google/vim-glaive'
-
     " Debugging
-    Plug 'Dica-Developer/vim-jdb'
+    if !has('nvim')
+      Plug 'Dica-Developer/vim-jdb'
+    endif
 call plug#end()
-call glaive#Install()
 
-" Plugin configuration
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-\ 'auto_complete_delay': 200,
-\ 'smart_case': v:true,
-\ })
-let home = $HOME
-let gjf = "java -jar ".home."/.local/share/gjf/google-java-format-all-deps.jar"
-Glaive codefmt plugin[mappings]
-Glaive codefmt google_java_executable=`g:gjf`
+" ALE config
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
 
 " javacomplete2 configuration
 let g:JavaComplete_StaticImportsAtTop = 1
@@ -130,14 +114,17 @@ set laststatus=2
 map <Leader>1 :NERDTreeToggle<CR>
 map <Leader>2 :TagbarToggle<CR>
 map <Leader>c :Commands<CR>
-map <Leader>da :JDBAttach<CR>
-map <Leader>de :JDBDetach<CR>
-map <Leader>db :JDBBreakpointOnLine<CR>
-map <Leader>dB :JDBClearBreakpointOnLine<CR>
-map <Leader>dn :JDBStepOver<CR>
-map <Leader>dN :JDBStepIn<CR>
-map <Leader>dr :JDBCommand 
-map <Leader>dc :JDBContinue<CR>
+
+if !has('nvim')
+  map <Leader>da :JDBAttach<CR>
+  map <Leader>de :JDBDetach<CR>
+  map <Leader>db :JDBBreakpointOnLine<CR>
+  map <Leader>dB :JDBClearBreakpointOnLine<CR>
+  map <Leader>dn :JDBStepOver<CR>
+  map <Leader>dN :JDBStepIn<CR>
+  map <Leader>dr :JDBCommand 
+  map <Leader>dc :JDBContinue<CR>
+endif
 
 " Prepare for copying to clipboard.
 map <Leader>y :setl nolist nonumber <CR>
@@ -173,8 +160,8 @@ set listchars=tab:▸\ ,eol:¬
 set list
 
 " Color scheme
-syntax enable
-set background=dark
+" syntax enable
+" set background=dark
 silent! colorscheme gruvbox
 
 " Numbers
@@ -198,17 +185,12 @@ map <Leader>b :b#<Enter>
 if has("autocmd")
   " Enable file type detection.
   filetype plugin indent on
-  " set omnifunc=syntaxcomplete#Complete
 
   " Set File type to 'text' for files ending in .txt
   autocmd BufNewFile,BufRead *.txt setfiletype text
 
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
-
-  " Enable java plugins
-  autocmd FileType java setlocal omnifunc=javacomplete#Complete
-  autocmd FileType java AutoFormatBuffer google-java-format
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
@@ -229,7 +211,6 @@ endif
 
 if has("folding")
   set foldenable
-  set foldmethod=syntax
   set foldmethod=syntax
   set foldlevel=99
   set foldnestmax=2
