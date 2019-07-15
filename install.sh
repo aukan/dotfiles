@@ -41,7 +41,12 @@ if [ $clean = "true" ]; then
   # Clean directories
   find dotfiles/* -maxdepth 0 -type d | \
       sed "s|dotfiles/|$HOME/.|" | \
-      xargs -I{} bash -c '([[ -e {} ]] && rm -rf {}) || true'
+      xargs -I{} bash -c '(rm -rf {}) || true'
+
+  # Clean files
+  find dotfiles/* -type f | \
+      sed "s|dotfiles/|$HOME/.|" | \
+      xargs -I{} bash -c 'rm {}'
 fi
 
 # Copy files
